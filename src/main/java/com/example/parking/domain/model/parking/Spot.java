@@ -5,7 +5,6 @@ import com.example.parking.domain.model.vehicle.Vehicle;
 
 public abstract class Spot {
 
-    //TODO - remove comment - should I have Optional here?
     private Vehicle vehicle;
 
     private int number;

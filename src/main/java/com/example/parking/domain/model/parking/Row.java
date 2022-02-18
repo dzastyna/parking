@@ -15,7 +15,6 @@ public class Row {
         this.spots = spots;
     }
 
-    //TODO remove comment - ja bym chyba jednak opakowala to w jakas klase
     public Optional<SpotCoordinates[]> tryParkingVehicle(Vehicle vehicle) {
         int numberOfSpotsRequired = howManySpots(vehicle);
         if (enughSpotsInARow(numberOfSpotsRequired)) {
@@ -80,7 +79,6 @@ public class Row {
         return spots.length >= numberOfSpotsRequired;
     }
 
-    //TODO remove comment - this solution has one diadvantage - where is the knowladge - how many spots and of what type? At least in two places - Sopot and a Row
     private int howManySpots(Vehicle vehicle) {
         if (vehicle instanceof Bus) {
             return 5;
