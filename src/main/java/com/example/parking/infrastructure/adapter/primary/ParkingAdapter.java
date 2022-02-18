@@ -16,11 +16,13 @@ public class ParkingAdapter {
     private ParkingService parkingService;
 
     @PostMapping("/parkVehicle")
-    String newCall(@RequestBody ParkingRequest parkingRequest) {
+    String parkVehicle(@RequestBody ParkingRequest parkingRequest) {
         Optional<SpotCoordinates[]> parkingSpots = Optional.empty();
 
         switch(parkingRequest.getVehicle().getVehicleType()) {
         case BUS: parkingSpots = parkBus(parkingRequest); break;
+        case MOTORCYCLE: parkingSpots = parkMotorcycle(parkingRequest); break;
+        case CAR: parkingSpots = parkCar(parkingRequest); break;
         default: throw new UnsupportedOperationException();
         }
 
@@ -34,6 +36,20 @@ public class ParkingAdapter {
         } else {
             return null;
         }
+    }
+
+    private Optional<SpotCoordinates[]> parkCar(ParkingRequest parkingRequest) {
+        return parkingService.parkCar(
+            parkingRequest.getParkingId(),
+            parkingRequest.getVehicle().getLicencePlates()
+        );
+    }
+
+    private Optional<SpotCoordinates[]> parkMotorcycle(ParkingRequest parkingRequest) {
+        return parkingService.parkMotorcycle(
+            parkingRequest.getParkingId(),
+            parkingRequest.getVehicle().getLicencePlates()
+        );
     }
 
     private Optional<SpotCoordinates[]> parkBus(@RequestBody ParkingRequest parkingRequest) {

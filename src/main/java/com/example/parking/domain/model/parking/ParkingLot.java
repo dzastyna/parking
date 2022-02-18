@@ -13,8 +13,8 @@ public class ParkingLot {
     }
 
     public Optional<SpotCoordinates[]> tryParkingVehicle(Vehicle vehicle) {
-        for(Row level : rows) {
-            Optional<SpotCoordinates[]> spotCoordinates = level.tryParkingVehicle(vehicle);
+        for(Row row : rows) {
+            Optional<SpotCoordinates[]> spotCoordinates = row.tryParkingVehicle(vehicle);
             if (spotCoordinates.isPresent()) {
                 return spotCoordinates;
             }

@@ -32,7 +32,7 @@ public class Row {
     private Optional<SpotCoordinates[]> tryToFindAvailableSpots(Vehicle vehicle, int numberOfSpotsRequired) {
         Optional<Spot[]> foundSpots = findSpots(vehicle, numberOfSpotsRequired);
         if (foundSpots.isPresent()) {
-            reserveSpots(vehicle, spots);
+            reserveSpots(vehicle, foundSpots.get());
             SpotCoordinates[] spotsFound = prepareSpotCoordinates(numberOfSpotsRequired, foundSpots.get());
             return Optional.of(spotsFound);
         } else {
@@ -69,7 +69,7 @@ public class Row {
             spotToCheck++;
         }
 
-        return foundSpotsCount > 0? Optional.of(foundSpots) : Optional.empty();
+        return foundSpotsCount == numberOfSpotsRequired ? Optional.of(foundSpots) : Optional.empty();
     }
 
     private Optional<SpotCoordinates[]> spotsNotFound() {
