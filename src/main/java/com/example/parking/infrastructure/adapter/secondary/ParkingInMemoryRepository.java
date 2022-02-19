@@ -1,4 +1,4 @@
-package com.example.parking.domain.repository;
+package com.example.parking.infrastructure.adapter.secondary;
 
 import com.example.parking.domain.model.parking.CompactSpot;
 import com.example.parking.domain.model.parking.LargeSpot;
@@ -13,17 +13,21 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
-public class InMemoryParkingRepository {
+public class ParkingInMemoryRepository {
 
     private Map<String, ParkingLot> parkingLots = new HashMap<>();
 
-    public InMemoryParkingRepository() {
+    public ParkingInMemoryRepository() {
         createParkingLots();
     }
 
     public Optional<ParkingLot> findById(String id) {
         ParkingLot pl = parkingLots.get(id);
         return pl == null ? Optional.empty() : Optional.of(pl);
+    }
+
+    public Map<String, ParkingLot> findAll() {
+        return parkingLots;
     }
 
     private void createParkingLots() {

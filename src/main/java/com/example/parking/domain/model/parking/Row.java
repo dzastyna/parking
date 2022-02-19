@@ -1,9 +1,13 @@
 package com.example.parking.domain.model.parking;
 
+import com.example.parking.domain.model.parking.status.RowStatus;
+import com.example.parking.domain.model.parking.status.SpotStatus;
 import com.example.parking.domain.model.vehicle.Bus;
 import com.example.parking.domain.model.vehicle.Vehicle;
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Row {
 
@@ -85,5 +89,16 @@ public class Row {
         } else {
             return 1;
         }
+    }
+
+    RowStatus getStatus() {
+        return new RowStatus(this.number, prepareSpotStatus());
+    }
+
+    private SpotStatus[] prepareSpotStatus() {
+        return Arrays.stream(spots)
+                     .map(s -> s.getStatus())
+                     .collect(Collectors.toList())
+                     .toArray(new SpotStatus[spots.length]);
     }
 }

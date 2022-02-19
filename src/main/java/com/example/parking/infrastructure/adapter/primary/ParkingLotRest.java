@@ -2,6 +2,7 @@ package com.example.parking.infrastructure.adapter.primary;
 
 import com.example.parking.domain.model.parking.SpotCoordinates;
 import com.example.parking.domain.port.primary.ParkingService;
+import com.example.parking.infrastructure.adapter.secondary.ParkingJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,19 +11,23 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-public class ParkingAdapter {
+public class ParkingLotRest {
 
     @Autowired
     private ParkingService parkingService;
 
+    @Autowired
+    private ParkingJpaRepository parkingJpaRepository;
+
     @PostMapping("/parkVehicle")
-    String parkVehicle(@RequestBody ParkingRequest parkingRequest) {
+    String parkVehicle(@RequestBody ParkVehicleRequest parkVehicleRequest) {
         Optional<SpotCoordinates[]> parkingSpots = Optional.empty();
 
-        switch(parkingRequest.getVehicle().getVehicleType()) {
-        case BUS: parkingSpots = parkBus(parkingRequest); break;
-        case MOTORCYCLE: parkingSpots = parkMotorcycle(parkingRequest); break;
-        case CAR: parkingSpots = parkCar(parkingRequest); break;
+        switch(parkVehicleRequest
+            .getVehicle().getVehicleType()) {
+        case BUS: parkingSpots = parkBus(parkVehicleRequest); break;
+        case MOTORCYCLE: parkingSpots = parkMotorcycle(parkVehicleRequest); break;
+        case CAR: parkingSpots = parkCar(parkVehicleRequest); break;
         default: throw new UnsupportedOperationException();
         }
 
@@ -38,24 +43,27 @@ public class ParkingAdapter {
         }
     }
 
-    private Optional<SpotCoordinates[]> parkCar(ParkingRequest parkingRequest) {
+    private Optional<SpotCoordinates[]> parkCar(ParkVehicleRequest parkVehicleRequest) {
         return parkingService.parkCar(
-            parkingRequest.getParkingId(),
-            parkingRequest.getVehicle().getLicencePlates()
+            parkVehicleRequest.getParkingId(),
+            parkVehicleRequest
+                .getVehicle().getLicencePlates()
         );
     }
 
-    private Optional<SpotCoordinates[]> parkMotorcycle(ParkingRequest parkingRequest) {
+    private Optional<SpotCoordinates[]> parkMotorcycle(ParkVehicleRequest parkVehicleRequest) {
         return parkingService.parkMotorcycle(
-            parkingRequest.getParkingId(),
-            parkingRequest.getVehicle().getLicencePlates()
+            parkVehicleRequest.getParkingId(),
+            parkVehicleRequest
+                .getVehicle().getLicencePlates()
         );
     }
 
-    private Optional<SpotCoordinates[]> parkBus(@RequestBody ParkingRequest parkingRequest) {
+    private Optional<SpotCoordinates[]> parkBus(@RequestBody ParkVehicleRequest parkVehicleRequest) {
         return parkingService.parkBus(
-            parkingRequest.getParkingId(),
-            parkingRequest.getVehicle().getLicencePlates()
+            parkVehicleRequest.getParkingId(),
+            parkVehicleRequest
+                .getVehicle().getLicencePlates()
         );
     }
 }

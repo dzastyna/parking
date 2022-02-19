@@ -6,7 +6,7 @@ import com.example.parking.domain.model.vehicle.Bus;
 import com.example.parking.domain.model.vehicle.Car;
 import com.example.parking.domain.model.vehicle.Motorcycle;
 import com.example.parking.domain.model.vehicle.Vehicle;
-import com.example.parking.domain.repository.InMemoryParkingRepository;
+import com.example.parking.infrastructure.adapter.secondary.ParkingInMemoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class ParkingService {
 
     @Autowired
-    private InMemoryParkingRepository parkingRepository;
+    private ParkingInMemoryRepository parkingRepository;
 
     public Optional<SpotCoordinates[]> parkBus(String parkingId, String licencePlates) {
         Vehicle bus = new Bus(licencePlates);

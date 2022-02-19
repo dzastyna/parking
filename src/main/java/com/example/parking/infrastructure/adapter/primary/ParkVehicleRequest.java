@@ -1,6 +1,6 @@
 package com.example.parking.infrastructure.adapter.primary;
 
-public class ParkingRequest {
+public class ParkVehicleRequest {
     private Vehicle vehicle;
     private String parkingId;
 

@@ -7,7 +7,8 @@ public abstract class Vehicle {
         this.licencePlate = licencePlate;
     }
 
-    public boolean equals(Vehicle other) {
-        return this.licencePlate.equals(other.licencePlate);
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "{" + licencePlate + "}";
     }
 }
