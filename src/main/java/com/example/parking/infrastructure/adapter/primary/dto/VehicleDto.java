@@ -1,6 +1,6 @@
-package com.example.parking.infrastructure.adapter.primary;
+package com.example.parking.infrastructure.adapter.primary.dto;
 
-public class Vehicle {
+public class VehicleDto {
     private String licencePlates;
     private VehicleType vehicleType;
 

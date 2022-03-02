@@ -13,26 +13,14 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class ParkingService {
+public class ParkingLotService {
 
     @Autowired
     private ParkingInMemoryRepository parkingRepository;
 
-    public Optional<SpotCoordinates[]> parkBus(String parkingId, String licencePlates) {
-        Vehicle bus = new Bus(licencePlates);
+    public Optional<SpotCoordinates[]> parkVehicle(String parkingId, Vehicle vehicle) {
         Optional<ParkingLot> parkingLot = parkingRepository.findById(parkingId);
-        return parkingLot.get().tryParkingVehicle(bus);
+        return parkingLot.get().tryParkingVehicle(vehicle);
     }
 
-    public Optional<SpotCoordinates[]> parkCar(String parkingId, String licencePlates) {
-        Vehicle car = new Car(licencePlates);
-        Optional<ParkingLot> parkingLot = parkingRepository.findById(parkingId);
-        return parkingLot.get().tryParkingVehicle(car);
-    }
-
-    public Optional<SpotCoordinates[]> parkMotorcycle(String parkingId, String licencePlates) {
-        Vehicle motor = new Motorcycle(licencePlates);
-        Optional<ParkingLot> parkingLot = parkingRepository.findById(parkingId);
-        return parkingLot.get().tryParkingVehicle(motor);
-    }
 }

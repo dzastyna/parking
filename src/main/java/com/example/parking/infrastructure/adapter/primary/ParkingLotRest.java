@@ -1,69 +1,57 @@
 package com.example.parking.infrastructure.adapter.primary;
 
 import com.example.parking.domain.model.parking.SpotCoordinates;
-import com.example.parking.domain.port.primary.ParkingService;
-import com.example.parking.infrastructure.adapter.secondary.ParkingJpaRepository;
+import com.example.parking.domain.model.vehicle.Bus;
+import com.example.parking.domain.model.vehicle.Car;
+import com.example.parking.domain.model.vehicle.Motorcycle;
+import com.example.parking.domain.model.vehicle.Vehicle;
+import com.example.parking.domain.port.primary.ParkingLotService;
+import com.example.parking.infrastructure.adapter.primary.dto.ParkVehicleRequest;
+import com.example.parking.infrastructure.adapter.primary.dto.VehicleDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class ParkingLotRest {
 
     @Autowired
-    private ParkingService parkingService;
-
-    @Autowired
-    private ParkingJpaRepository parkingJpaRepository;
+    private ParkingLotService parkingLotService;
 
     @PostMapping("/parkVehicle")
-    String parkVehicle(@RequestBody ParkVehicleRequest parkVehicleRequest) {
-        Optional<SpotCoordinates[]> parkingSpots = Optional.empty();
+    List<String> parkVehicle(@RequestBody ParkVehicleRequest parkVehicleRequest) {
 
-        switch(parkVehicleRequest
-            .getVehicle().getVehicleType()) {
-        case BUS: parkingSpots = parkBus(parkVehicleRequest); break;
-        case MOTORCYCLE: parkingSpots = parkMotorcycle(parkVehicleRequest); break;
-        case CAR: parkingSpots = parkCar(parkVehicleRequest); break;
-        default: throw new UnsupportedOperationException();
-        }
+        Vehicle vehicle = prepareVehicle(parkVehicleRequest.getVehicle());
 
-        return getFirstSpotCoordinates(parkingSpots);
+        Optional<SpotCoordinates[]> parkingSpots =
+            parkingLotService.parkVehicle(parkVehicleRequest.getParkingId(), vehicle);
+
+        return getSpotList(parkingSpots);
     }
 
-    private String getFirstSpotCoordinates(Optional<SpotCoordinates[]> parkingSpots) {
+    private com.example.parking.domain.model.vehicle.Vehicle prepareVehicle(VehicleDto vehicle) {
+        switch(vehicle.getVehicleType()) {
+        case BUS: return new Bus(vehicle.getLicencePlates());
+        case MOTORCYCLE: return new Motorcycle(vehicle.getLicencePlates());
+        case CAR: return new Car(vehicle.getLicencePlates());
+        default: throw new UnsupportedOperationException();
+        }
+    }
+
+    private List<String> getSpotList(Optional<SpotCoordinates[]> parkingSpots) {
+
         if (parkingSpots.isPresent()) {
-            SpotCoordinates firstSpotCoordinates = parkingSpots.get()[0];
-            return firstSpotCoordinates.getRowNo() + "." + firstSpotCoordinates.getSpotNo();
+            return Arrays.stream(parkingSpots.get())
+                         .map(spot -> spot.getRowNo() + "." + spot.getSpotNo())
+                         .collect(Collectors.toList());
         } else {
             return null;
         }
-    }
-
-    private Optional<SpotCoordinates[]> parkCar(ParkVehicleRequest parkVehicleRequest) {
-        return parkingService.parkCar(
-            parkVehicleRequest.getParkingId(),
-            parkVehicleRequest
-                .getVehicle().getLicencePlates()
-        );
-    }
-
-    private Optional<SpotCoordinates[]> parkMotorcycle(ParkVehicleRequest parkVehicleRequest) {
-        return parkingService.parkMotorcycle(
-            parkVehicleRequest.getParkingId(),
-            parkVehicleRequest
-                .getVehicle().getLicencePlates()
-        );
-    }
-
-    private Optional<SpotCoordinates[]> parkBus(@RequestBody ParkVehicleRequest parkVehicleRequest) {
-        return parkingService.parkBus(
-            parkVehicleRequest.getParkingId(),
-            parkVehicleRequest
-                .getVehicle().getLicencePlates()
-        );
     }
 }

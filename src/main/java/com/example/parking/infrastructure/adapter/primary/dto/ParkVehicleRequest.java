@@ -1,10 +1,12 @@
-package com.example.parking.infrastructure.adapter.primary;
+package com.example.parking.infrastructure.adapter.primary.dto;
+
+import com.example.parking.infrastructure.adapter.primary.dto.VehicleDto;
 
 public class ParkVehicleRequest {
-    private Vehicle vehicle;
+    private VehicleDto vehicle;
     private String parkingId;
 
-    public Vehicle getVehicle() {
+    public VehicleDto getVehicle() {
         return vehicle;
     }
 
@@ -12,7 +14,7 @@ public class ParkVehicleRequest {
         return parkingId;
     }
 
-    public void setVehicle(Vehicle vehicle) {
+    public void setVehicle(VehicleDto vehicle) {
         this.vehicle = vehicle;
     }
 
