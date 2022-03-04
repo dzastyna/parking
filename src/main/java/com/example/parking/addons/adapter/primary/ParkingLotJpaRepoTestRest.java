@@ -19,10 +19,16 @@ public class ParkingLotJpaRepoTestRest {
 
     @PostMapping("/jpaSaveParkingLot")
     public String saveParkingLot(@RequestBody ParkingLotJpaRepoTestRequest request) {
+        ParkingEntity pe = createParking(request);
+        repo.save(pe);
+        return "Parking " + pe.getId() + " saved.";
+    }
+
+    private ParkingEntity createParking(
+        @RequestBody ParkingLotJpaRepoTestRequest request) {
         ParkingEntity pe = new ParkingEntity();
         pe.setId(request.getName());
-        repo.save(pe);
-        return "Hej " + request.getName();
+        return pe;
     }
 
     @GetMapping("/jpaAllParkingLots")
