@@ -24,16 +24,16 @@ public class ParkingLotJpaRepoTestRest {
         return "Parking " + pe.getId() + " saved.";
     }
 
+    @GetMapping("/jpaAllParkingLots")
+    public List<String> findAllParkingLots() {
+        List<ParkingEntity> pe = repo.findAll();
+        return pe.stream().map(x -> x.getId()).collect(Collectors.toList());
+    }
+
     private ParkingEntity createParking(
         @RequestBody ParkingLotJpaRepoTestRequest request) {
         ParkingEntity pe = new ParkingEntity();
         pe.setId(request.getName());
         return pe;
-    }
-
-    @GetMapping("/jpaAllParkingLots")
-    public List<String> findAllParkingLots() {
-        List<ParkingEntity> pe = repo.findAll();
-        return pe.stream().map(x -> x.getId()).collect(Collectors.toList());
     }
 }

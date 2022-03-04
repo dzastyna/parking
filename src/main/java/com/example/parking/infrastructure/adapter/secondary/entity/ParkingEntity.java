@@ -3,6 +3,7 @@ package com.example.parking.infrastructure.adapter.secondary.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.List;
 
 @Entity

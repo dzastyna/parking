@@ -3,11 +3,11 @@ package com.example.parking.infrastructure.adapter.secondary.entity;
 public class RowEntity {
     private int number;
 
-    int getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    void setNumber(int number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 }

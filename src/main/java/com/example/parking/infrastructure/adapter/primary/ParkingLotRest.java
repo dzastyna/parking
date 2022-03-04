@@ -35,15 +35,6 @@ public class ParkingLotRest {
         return getSpotList(parkingSpots);
     }
 
-    private com.example.parking.domain.model.vehicle.Vehicle prepareVehicle(VehicleDto vehicle) {
-        switch(vehicle.getVehicleType()) {
-        case BUS: return new Bus(vehicle.getLicencePlates());
-        case MOTORCYCLE: return new Motorcycle(vehicle.getLicencePlates());
-        case CAR: return new Car(vehicle.getLicencePlates());
-        default: throw new UnsupportedOperationException();
-        }
-    }
-
     private List<String> getSpotList(Optional<SpotCoordinates[]> parkingSpots) {
 
         if (parkingSpots.isPresent()) {
@@ -52,6 +43,15 @@ public class ParkingLotRest {
                          .collect(Collectors.toList());
         } else {
             return null;
+        }
+    }
+
+    private com.example.parking.domain.model.vehicle.Vehicle prepareVehicle(VehicleDto vehicle) {
+        switch(vehicle.getVehicleType()) {
+        case BUS: return new Bus(vehicle.getLicencePlates());
+        case MOTORCYCLE: return new Motorcycle(vehicle.getLicencePlates());
+        case CAR: return new Car(vehicle.getLicencePlates());
+        default: throw new UnsupportedOperationException();
         }
     }
 }
